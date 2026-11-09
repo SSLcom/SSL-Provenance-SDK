@@ -1,0 +1,55 @@
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ssl-provenance-sdk"
+dynamic = ["version"]
+description = "Sign assets with C2PA manifests using SSL.com Provenance API"
+readme = "README.md"
+requires-python = ">=3.10"
+license = "Apache-2.0"
+license-files = ["LICENSE"]
+authors = [{ name = "SSL.com" }]
+keywords = ["c2pa", "content-credentials", "provenance", "signing", "esigner", "csc"]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Developers",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Multimedia",
+    "Topic :: Security :: Cryptography",
+    "Typing :: Typed",
+]
+dependencies = [
+    # _native.py drives c2pa-python's handle-ownership helpers and the native
+    # library's FFI directly; keep this pinned to a tested minor version.
+    "c2pa-python>=0.38,<0.39",
+    "requests>=2.31",
+    "cbor2>=5.6",
+    "asn1crypto>=1.5",
+]
+
+[project.optional-dependencies]
+test = ["pytest>=8", "cryptography>=42"]
+dev = ["ssl-provenance-sdk[test]", "build>=1.2", "twine>=5"]
+
+[project.urls]
+Homepage = "https://www.ssl.com/"
+
+[tool.setuptools.dynamic]
+version = { attr = "ssl_provenance_sdk.__version__" }
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+ssl_provenance_sdk = ["py.typed"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

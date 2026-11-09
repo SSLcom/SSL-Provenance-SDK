@@ -1,0 +1,6 @@
+# Source distribution contents beyond setuptools' defaults (src/, README, pyproject).
+include README.md
+recursive-include tests *.py
+prune examples
+prune .idea
+global-exclude *.py[cod] __pycache__ .DS_Store
