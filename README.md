@@ -595,3 +595,6 @@ law or agreed to in writing, software distributed under the License is distribut
 "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and limitations under the
 License.
+
+Copyright 2026 - SSL Corp
+ssl.com/c2pa
