@@ -1,4 +1,4 @@
-# SSL Provenance API SDK — Developer Integration Guide
+# SSL Provenance API SDK
 
 The SSL Provenance API SDK is a Python library for adding [C2PA](https://c2pa.org/) content
 credentials to digital assets. It creates (or adds to) manifests and signs them through SSL.com's Provenance API; your signing keys never leave SSL.com.
