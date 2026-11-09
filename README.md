@@ -66,11 +66,7 @@ pip install ssl_provenance_sdk-1.0.0-py3-none-any.whl   # wheel from dist/
 pip install /path/to/ssl_provenance_sdk                 # source checkout
 ```
 
-The import name is `ssl_provenance_sdk`. For development, install it in editable mode with the test dependencies:
-
-```bash
-pip install -e ".[test]"
-```
+The import name is `ssl_provenance_sdk`.
 
 Install the SDK into the **same interpreter or virtual environment** your application
 (or IDE) runs. The SDK depends on `c2pa-python` (imported as `c2pa`), `requests`, `cbor2`
