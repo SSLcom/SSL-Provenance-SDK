@@ -53,13 +53,7 @@ C2PA credential ID (and, for CAWG identity, the CAWG credential ID) explicitly.
 
 ## 2. Installation
 
-Install it from GitHub:
-
-```bash
-pip install https://github.com/SSLcom/SSL-Provenance-SDK.git
-```
-
-Or install from a built wheel or a source checkout instead:
+The package will soon be published on pip, meanwhile install from a built wheel or a source checkout instead:
 
 ```bash
 pip install ssl_provenance_sdk-1.0.0-py3-none-any.whl   # wheel from dist/
