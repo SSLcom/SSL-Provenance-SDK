@@ -38,8 +38,8 @@ asset build a `SignRequest`, pass the asset as `bytes`, and get the signed asset
 | You need | Notes |
 |---|---|
 | Python 3.10 or newer | See [Platform support](#10-platform-support-and-limitations) |
-| An SSL.com eSigner account with a document-signing credential | Its **credential ID** identifies the certificate that signs the C2PA claim |
-| An eSigner **access token** | An OAuth access token for the API. Get one with `get_access_token`; tokens expire, so refresh them with `refresh_access_token` (see [Access tokens](#access-tokens-oauth)) |
+| Access to the SSL.com Provenance API | See [SSL.com Provenance API](https://www.ssl.com/products/content-authenticity/content-credentials/provenance-api/) |
+| An eSigner **access token** | An OAuth access token to access the API (see [Access tokens](#access-tokens-oauth)) |
 | A **TSA token** | Authenticates to the SSL.com timestamp authority, which rejects unauthenticated requests. Set it once on the client, `ProvenanceClient(tsa_token=...)`, or per request with `set_tsa_token()`; see [Timestamp authority](#timestamp-authority-tsa) |
 | *(Optional)* a second credential for CAWG identity | If you want to optional add a creator organization or individual or both |
 | Outbound network access | To the API endpoints, the timestamp authority (TSA) and, when you call `download_trust_anchors`, the trust-list URLs; see [Trust anchors](#trust-anchors) |
@@ -53,14 +53,24 @@ C2PA credential ID (and, for CAWG identity, the CAWG credential ID) explicitly.
 
 ## 2. Installation
 
-The package will soon be published on pip, meanwhile install from a built wheel or a source checkout instead:
+Install it from GitHub:
+
+```bash
+pip install https://github.com/SSLcom/SSL-Provenance-SDK.git
+```
+
+Or install from a built wheel or a source checkout instead:
 
 ```bash
 pip install ssl_provenance_sdk-1.0.0-py3-none-any.whl   # wheel from dist/
 pip install /path/to/ssl_provenance_sdk                 # source checkout
 ```
 
-The import name is `ssl_provenance_sdk`.
+The import name is `ssl_provenance_sdk`. For development, install it in editable mode with the test dependencies:
+
+```bash
+pip install -e ".[test]"
+```
 
 Install the SDK into the **same interpreter or virtual environment** your application
 (or IDE) runs. The SDK depends on `c2pa-python` (imported as `c2pa`), `requests`, `cbor2`
@@ -316,7 +326,7 @@ endpoints the client uses:
 | Endpoint | Sandbox | Production (default) | Override with |
 |---|---|---|---|
 | API | `https://cs-try.ssl.com` | `https://cs.ssl.com` | `set_csc_endpoint(url)` |
-| Timestamp authority (TSA) | `https://ts-c2pa.ssl.com/ecc` | `https://ts-c2pa.ssl.com/ecc` | `set_tsa_url(url)` (`None` disables timestamping) |
+| Timestamp authority (TSA) | `https://ts-c2pa.ssl.com` | `https://ts-c2pa.ssl.com` | `set_tsa_url(url)` (`None` disables timestamping) |
 | OAuth token endpoint | `https://oauth-sandbox.ssl.com/oauth2/token` | `https://login.ssl.com/oauth2/token` | `set_oauth_token_url(url)` |
 
 ```python
@@ -332,10 +342,9 @@ built-in ones are exported as `SANDBOX` and `PRODUCTION`. The `environment`, `cs
 #### Timestamp authority (SSL C2PA TSA)
 
 Every signature is timestamped by the SSL C2PA TSA so it stays verifiable after the signing
-certificate expires. The C2PA Conformant SSL TSA only accepts authenticated requests, so signing needs a TSA token.
-It is a static token, separate from the OAuth access token. Set it once on the client, which is enough when one token
-serves every request, or per request, for example when each of your customers has its
-own token:
+certificate expires. The C2PA Conformant SSL TSA only accepts authenticated requests, so signing needs a TSA token. This requires access to the [SSL C2PA TSA](https://www.ssl.com/products/content-authenticity/timestamping/).
+
+It is a static token, separate from the OAuth access token. Set it once on the client, which is enough when one token serves every request, or per request, for example when each of your customers has its own token:
 
 ```python
 client = ProvenanceClient("production", tsa_token=tsa_token)   # default for every request
@@ -395,7 +404,11 @@ as trusted.
 
 ### Access tokens (OAuth)
 
-The API needs an OAuth access token. Get one with `get_access_token`, passing the
+The API needs an OAuth access token. 
+To set this up refer to the [SSL Provenance API documentation](https://www.ssl.com/guide/ssl-provenance-api/#authentication).
+
+
+Then get the OAuth with `get_access_token`, passing the
 client's `oauth_token_url` so the token comes from the same environment as the client.
 It comes back as an `AccessToken`:
 
@@ -595,6 +608,3 @@ law or agreed to in writing, software distributed under the License is distribut
 "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and limitations under the
 License.
-
-Copyright 2026 - SSL Corp
-ssl.com/c2pa
